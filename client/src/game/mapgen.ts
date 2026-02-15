@@ -1,5 +1,5 @@
-import { createRng } from './rng';
-import { GRID_SIZE, TileType } from './types';
+import { createRng } from "./rng";
+import { GRID_SIZE, TileType } from "./types";
 
 const HOUSE_DENSITY = 0.02;
 

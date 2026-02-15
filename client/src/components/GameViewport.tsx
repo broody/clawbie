@@ -1,8 +1,8 @@
-import { useEffect, useRef, useCallback } from 'react';
-import { Application, Graphics, Container } from 'pixi.js';
-import { Viewport } from 'pixi-viewport';
-import { tileMap, entities } from '../data/gameStore';
-import { GRID_SIZE, TILE_PX, TILE_COLORS, TileType } from '../game/types';
+import { useEffect, useRef, useCallback } from "react";
+import { Application, Graphics, Container } from "pixi.js";
+import { Viewport } from "pixi-viewport";
+import { tileMap, entities } from "../data/gameStore";
+import { GRID_SIZE, TILE_PX, TILE_COLORS, TileType } from "../game/types";
 
 const WORLD_SIZE = GRID_SIZE * TILE_PX;
 const CHUNK_SIZE = 64; // tiles per chunk side
@@ -33,10 +33,15 @@ export default function GameViewport() {
     });
     app.stage.addChild(vp as any);
 
-    vp.drag().pinch().wheel().decelerate().clampZoom({
-      minScale: 0.02,
-      maxScale: 3,
-    }).clamp({ direction: 'all' });
+    vp.drag()
+      .pinch()
+      .wheel()
+      .decelerate()
+      .clampZoom({
+        minScale: 0.02,
+        maxScale: 3,
+      })
+      .clamp({ direction: "all" });
 
     // Start centered on spawn
     vp.moveCenter(50 * TILE_PX, 50 * TILE_PX);
@@ -79,7 +84,12 @@ export default function GameViewport() {
         for (let tx = startX; tx < endX; tx++) {
           const tile = tileMap[ty * GRID_SIZE + tx] as TileType;
           const color = TILE_COLORS[tile];
-          g.rect((tx - startX) * TILE_PX, (ty - startY) * TILE_PX, TILE_PX, TILE_PX).fill(color);
+          g.rect(
+            (tx - startX) * TILE_PX,
+            (ty - startY) * TILE_PX,
+            TILE_PX,
+            TILE_PX,
+          ).fill(color);
         }
       }
     }
@@ -93,7 +103,7 @@ export default function GameViewport() {
       const scale = vp.scale.x;
       const baseR = Math.max(2, TILE_PX * 0.4);
       for (const e of entities) {
-        const color = e.kind === 'human' ? 0x42a5f5 : 0xef5350;
+        const color = e.kind === "human" ? 0x42a5f5 : 0xef5350;
         const r = baseR / Math.max(scale, 0.1);
         entityGfx
           .circle(e.x * TILE_PX + TILE_PX / 2, e.y * TILE_PX + TILE_PX / 2, r)
@@ -106,8 +116,14 @@ export default function GameViewport() {
       const bounds = vp.getVisibleBounds();
       const minCX = Math.max(0, Math.floor(bounds.x / CHUNK_PX));
       const minCY = Math.max(0, Math.floor(bounds.y / CHUNK_PX));
-      const maxCX = Math.min(chunksX - 1, Math.floor((bounds.x + bounds.width) / CHUNK_PX));
-      const maxCY = Math.min(chunksY - 1, Math.floor((bounds.y + bounds.height) / CHUNK_PX));
+      const maxCX = Math.min(
+        chunksX - 1,
+        Math.floor((bounds.x + bounds.width) / CHUNK_PX),
+      );
+      const maxCY = Math.min(
+        chunksY - 1,
+        Math.floor((bounds.y + bounds.height) / CHUNK_PX),
+      );
 
       for (let cy = 0; cy < chunksY; cy++) {
         for (let cx = 0; cx < chunksX; cx++) {
@@ -119,8 +135,8 @@ export default function GameViewport() {
       drawEntities();
     }
 
-    vp.on('moved', updateVisibility);
-    vp.on('zoomed', updateVisibility);
+    vp.on("moved", updateVisibility);
+    vp.on("zoomed", updateVisibility);
     updateVisibility();
 
     // Handle resize
@@ -142,5 +158,16 @@ export default function GameViewport() {
     };
   }, [init]);
 
-  return <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }} />;
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+        top: 0,
+        left: 0,
+      }}
+    />
+  );
 }

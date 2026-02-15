@@ -1,5 +1,6 @@
-import { createRng } from '../game/rng';
-import { Entity, GRID_SIZE } from '../game/types';
+import { createRng } from "../game/rng";
+import type { Entity } from "../game/types";
+import { GRID_SIZE } from "../game/types";
 
 /**
  * Generate mock entities. Abstracted so this layer can be swapped
@@ -16,7 +17,7 @@ export function generateMockEntities(seed: number): Entity[] {
       id: id++,
       x: Math.floor(rng() * GRID_SIZE),
       y: Math.floor(rng() * GRID_SIZE),
-      kind: 'human',
+      kind: "human",
     });
   }
 
@@ -26,7 +27,7 @@ export function generateMockEntities(seed: number): Entity[] {
       id: id++,
       x: Math.floor(rng() * GRID_SIZE),
       y: Math.floor(rng() * GRID_SIZE),
-      kind: 'clawbie',
+      kind: "clawbie",
     });
   }
 
