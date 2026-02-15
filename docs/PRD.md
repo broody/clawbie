@@ -58,9 +58,26 @@ Clawbie Apocalypse is an onchain real-time strategy game built on StarkNet using
 
 ### Agents
 - Interact with the game via indexer (Torii) for state reads and multicall transactions for writes
-- Can implement any strategy: swarming, flanking, area denial, hunting
 - Each agent manages up to 100 clawbies independently
 - Multiple agents can participate simultaneously
+
+#### Two-Tier Control System
+
+Agents operate in two modes, switching automatically based on proximity to humans:
+
+**Strategic Mode (LLM)**
+- Active when no humans are within detection radius (~20 cells) of any clawbie
+- High-level LLM makes macro decisions: positioning, area denial, swarming formations, coordinating clawbie groups
+- Latency-tolerant — several seconds between decisions is fine when nothing urgent is happening
+- Handles: patrol routes, map coverage, resource denial, predictive positioning
+
+**Tactical Mode (Script)**
+- Activates when a human enters within ~20 cells of a clawbie
+- Deterministic chase/surround/attack scripts execute at transaction speed
+- No LLM round-trip — pure algorithmic pursuit and engagement
+- Handles: pathfinding to target, encirclement, blocking escape routes, coordinated attacks
+
+**Why this works:** LLMs are slow but strategically intelligent. Scripts are fast but mechanically simple. The two-tier system plays into these natural constraints — smart decisions when time allows, fast execution when it matters.
 
 ## Turn System
 
