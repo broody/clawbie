@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback } from "react";
-import { Application, Graphics, Container } from "pixi.js";
+import { Application, Graphics, Container, Sprite, Texture } from "pixi.js";
 import { Viewport } from "pixi-viewport";
 import { tileMap, entities } from "../data/gameStore";
 import { GRID_SIZE, TILE_PX, TILE_COLORS, TileType } from "../game/types";
@@ -41,10 +41,10 @@ export default function GameViewport() {
         minScale: 0.02,
         maxScale: 3,
       })
-      .clamp({ direction: "all" });
+;
 
-    // Start centered on spawn
-    vp.moveCenter(50 * TILE_PX, 50 * TILE_PX);
+    // Start centered on spawn (bottom-right)
+    vp.moveCenter(950 * TILE_PX, 950 * TILE_PX);
     vp.setZoom(1);
 
     // --- Chunked tile rendering ---
@@ -94,26 +94,27 @@ export default function GameViewport() {
       }
     }
 
-    // --- Entities layer ---
-    const entityGfx = new Graphics();
-    vp.addChild(entityGfx);
+    // --- Sprite-based entity rendering ---
+    const entityContainer = new Container();
+    vp.addChild(entityContainer);
 
-    function drawEntities() {
-      entityGfx.clear();
-      const scale = vp.scale.x;
-      const baseR = Math.max(2, TILE_PX * 0.4);
-      for (const e of entities) {
-        const color = e.kind === "human" ? 0x42a5f5 : 0xef5350;
-        const r = baseR / Math.max(scale, 0.1);
-        entityGfx
-          .circle(e.x * TILE_PX + TILE_PX / 2, e.y * TILE_PX + TILE_PX / 2, r)
-          .fill(color);
-      }
+    // Create a 1x1 white texture to tint per-entity
+    const pixelTexture = Texture.WHITE;
+
+    for (const e of entities) {
+      const sprite = new Sprite(pixelTexture);
+      sprite.width = TILE_PX;
+      sprite.height = TILE_PX;
+      sprite.x = e.x * TILE_PX;
+      sprite.y = e.y * TILE_PX;
+      sprite.tint = e.kind === "clawbie" ? 0xef5350 : 0x42a5f5;
+      entityContainer.addChild(sprite);
     }
 
-    // --- Visibility culling ---
+    // --- Visibility culling (tiles only) ---
     function updateVisibility() {
       const bounds = vp.getVisibleBounds();
+
       const minCX = Math.max(0, Math.floor(bounds.x / CHUNK_PX));
       const minCY = Math.max(0, Math.floor(bounds.y / CHUNK_PX));
       const maxCX = Math.min(
@@ -132,7 +133,6 @@ export default function GameViewport() {
           if (vis) drawChunk(cx, cy);
         }
       }
-      drawEntities();
     }
 
     vp.on("moved", updateVisibility);

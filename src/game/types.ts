@@ -11,7 +11,7 @@ export const TileType = {
 export type TileType = (typeof TileType)[keyof typeof TileType];
 
 export const TILE_COLORS: Record<TileType, number> = {
-  [TileType.Grass]: 0x4caf50,
+  [TileType.Grass]: 0x2e7d32,
   [TileType.House]: 0x795548,
   [TileType.Spawn]: 0x2196f3,
   [TileType.Destination]: 0xffc107,

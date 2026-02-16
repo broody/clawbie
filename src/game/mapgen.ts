@@ -12,15 +12,15 @@ export function generateMap(seed: number): Uint8Array {
   const map = new Uint8Array(GRID_SIZE * GRID_SIZE);
 
   for (let i = 0; i < map.length; i++) {
-    map[i] = rng() < HOUSE_DENSITY ? TileType.House : TileType.Grass;
+    map[i] = TileType.Grass;
   }
 
   // Fixed POIs
-  const spawnIdx = 50 * GRID_SIZE + 50; // (50,50)
-  map[spawnIdx] = TileType.Spawn;
-
-  const destIdx = 950 * GRID_SIZE + 950; // (950,950)
+  const destIdx = 10 * GRID_SIZE + 10; // (10,10) top-left
   map[destIdx] = TileType.Destination;
+
+  const spawnIdx = 950 * GRID_SIZE + 950; // (950,950) bottom-right
+  map[spawnIdx] = TileType.Spawn;
 
   return map;
 }
