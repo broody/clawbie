@@ -1,4 +1,4 @@
-export const GRID_SIZE = 1000;
+export const GRID_SIZE = 500;
 export const TILE_PX = 16; // pixels per tile at zoom=1
 
 export const TileType = {

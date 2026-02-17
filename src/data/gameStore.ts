@@ -9,4 +9,4 @@ import { generateMockEntities } from "./mockEntities";
 const SEED = 42;
 
 export const tileMap = generateMap(SEED);
-export const entities: Entity[] = generateMockEntities(SEED);
+export const entities: Entity[] = generateMockEntities(SEED, tileMap);
