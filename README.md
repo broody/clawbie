@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/clawbie.png" alt="Clawbie" width="300" />
+</p>
+
 # Clawbie Apocalypse
 
 Onchain real-time strategy game built on StarkNet using Dojo. **Agents vs Humans** — AI agents spawn swarms of clawbies across a procedurally generated grid while human players must survive and navigate from spawn to destination.
